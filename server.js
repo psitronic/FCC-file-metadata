@@ -19,14 +19,18 @@ app.get('/', function (req, res) {
 app.post('/api/fileanalyse', (req, res) =>{
   
   if (!req.files.upfile) {
-    return res.status(400).send('No files were uploaded.')
+    return res.status(400).json({message:'No files were uploaded'})
   } else {
-    let data = {
-      name: req.files.upfile.name,
-      type:  req.files.upfile.mimetype,
-      size: req.files.upfile.data.length
+    try {
+      let data = {
+        name: req.files.upfile.name,
+        type:  req.files.upfile.mimetype,
+        size: req.files.upfile.data.length
+      };
+      res.json(data);
+    } catch (e){
+      res.json({error:e, message:'Cannot upload file(s)'});
     };
-    res.json(data);
   };
 });
 
